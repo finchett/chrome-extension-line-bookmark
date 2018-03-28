@@ -1,2 +1,2 @@
 # line-bookmark
-Add persistent line bookmarks with notes on different places on a page and easily scroll between them
+A small chrome extension I wished existed so I made it. It basically adds pins on pages with notes and saves them on localStorage to be found later on when revisiting the page. The main reason I made this is because I wanted to easily switch between different lines on a page and not have to scroll back manually and search for them. It does not support pdf files though.
