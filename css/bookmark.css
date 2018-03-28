@@ -1,0 +1,269 @@
+.pin-line-bookmark {
+    position: absolute;
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background: url(chrome-extension://__MSG_@@extension_id__/media/placeholder.svg);
+    background-size: contain;
+    z-index: 90
+}
+
+@-webkit-keyframes bounceIn-line-bookmark {
+    20%,
+    40%,
+    60%,
+    80%,
+    from,
+    to {
+        -webkit-animation-timing-function: cubic-bezier(.215, .61, .355, 1);
+        animation-timing-function: cubic-bezier(.215, .61, .355, 1)
+    }
+    0% {
+        opacity: 0;
+        -webkit-transform: scale3d(.3, .3, .3);
+        transform: scale3d(.3, .3, .3)
+    }
+    20% {
+        -webkit-transform: scale3d(1.1, 1.1, 1.1);
+        transform: scale3d(1.1, 1.1, 1.1)
+    }
+    40% {
+        -webkit-transform: scale3d(.9, .9, .9);
+        transform: scale3d(.9, .9, .9)
+    }
+    60% {
+        opacity: 1;
+        -webkit-transform: scale3d(1.03, 1.03, 1.03);
+        transform: scale3d(1.03, 1.03, 1.03)
+    }
+    80% {
+        -webkit-transform: scale3d(.97, .97, .97);
+        transform: scale3d(.97, .97, .97)
+    }
+    to {
+        opacity: 1;
+        -webkit-transform: scale3d(1, 1, 1);
+        transform: scale3d(1, 1, 1)
+    }
+}
+
+@keyframes bounceIn-line-bookmark {
+    20%,
+    40%,
+    60%,
+    80%,
+    from,
+    to {
+        -webkit-animation-timing-function: cubic-bezier(.215, .61, .355, 1);
+        animation-timing-function: cubic-bezier(.215, .61, .355, 1)
+    }
+    0% {
+        opacity: 0;
+        -webkit-transform: scale3d(.3, .3, .3);
+        transform: scale3d(.3, .3, .3)
+    }
+    20% {
+        -webkit-transform: scale3d(1.1, 1.1, 1.1);
+        transform: scale3d(1.1, 1.1, 1.1)
+    }
+    40% {
+        -webkit-transform: scale3d(.9, .9, .9);
+        transform: scale3d(.9, .9, .9)
+    }
+    60% {
+        opacity: 1;
+        -webkit-transform: scale3d(1.03, 1.03, 1.03);
+        transform: scale3d(1.03, 1.03, 1.03)
+    }
+    80% {
+        -webkit-transform: scale3d(.97, .97, .97);
+        transform: scale3d(.97, .97, .97)
+    }
+    to {
+        opacity: 1;
+        -webkit-transform: scale3d(1, 1, 1);
+        transform: scale3d(1, 1, 1)
+    }
+}
+
+.bounceIn-line-bookmark {
+    -webkit-animation-duration: .5s;
+    animation-duration: .5s;
+    -webkit-animation-name: bounceIn-line-bookmark;
+    animation-name: bounceIn-line-bookmark
+}
+
+@-webkit-keyframes zoomOut-line-bookmark {
+    from {
+        opacity: 1
+    }
+    50% {
+        opacity: 0;
+        -webkit-transform: scale3d(.3, .3, .3);
+        transform: scale3d(.3, .3, .3)
+    }
+    to {
+        opacity: 0
+    }
+}
+
+@keyframes zoomOut-line-bookmark {
+    from {
+        opacity: 1
+    }
+    50% {
+        opacity: 0;
+        -webkit-transform: scale3d(.3, .3, .3);
+        transform: scale3d(.3, .3, .3)
+    }
+    to {
+        opacity: 0
+    }
+}
+
+.remove-pin-line-bookmark {
+    -webkit-animation-name: zoomOut-line-bookmark;
+    animation-name: zoomOut-line-bookmark;
+    -webkit-animation-duration: .5s;
+    animation-duration: .5s
+}
+
+.note-line-bookmark {
+    max-width: 130px;
+    background-color: #fff;
+    color: rgba(0, 0, 0, .87);
+    font-family: sans-serif;
+    border-radius: 1px;
+    padding: 8px 15px 7px 20px;
+    font-size: 14px;
+    line-height: 19px;
+    position: absolute;
+    left: 20px;
+    bottom: 30px;
+    min-width: 130px;
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .14), 0 3px 1px -2px rgba(0, 0, 0, .2), 0 1px 5px 0 rgba(0, 0, 0, .12);
+    visibility: hidden;
+    -webkit-transition-duration: .218s;
+    transition-duration: .218s;
+    -webkit-transition-property: -webkit-box-shadow, -webkit-transform;
+    transition-property: box-shadow;
+    -webkit-transition-timing-function: ease-in;
+    transition-timing-function: ease-in;
+    z-index: 101
+}
+
+.noteText-line-bookmark {
+    outline: 0;
+    line-height: 19px;
+    padding: 8px 0
+}
+
+.hoverShadow-line-bookmark {
+    box-shadow: 0 0 0 0 transparent, 0 0 0 0 transparent, 0 2px 15px rgba(0, 0, 0, .3)
+}
+
+[contenteditable=true]:empty:before {
+    content: attr(placeholder);
+    color: rgba(0, 0, 0, .54)
+}
+
+.zoomIn-line-bookmark {
+    -webkit-animation-name: zoomIn-line-bookmark;
+    animation-name: zoomIn-line-bookmark;
+    -webkit-animation-duration: .2s;
+    animation-duration: .2s;
+    visibility: visible
+}
+
+@-webkit-keyframes zoomIn-line-bookmark {
+    from {
+        opacity: 0;
+        -webkit-transform: scale3d(.3, .3, .3);
+        transform: scale3d(.3, .3, .3)
+    }
+    50% {
+        opacity: 1
+    }
+}
+
+@keyframes zoomIn-line-bookmark {
+    from {
+        opacity: 0;
+        -webkit-transform: scale3d(.3, .3, .3);
+        transform: scale3d(.3, .3, .3)
+    }
+    50% {
+        opacity: 1
+    }
+}
+
+@-webkit-keyframes fadeInUp-line-bookmark {
+    from {
+        opacity: 0;
+        -webkit-transform: translate3d(0, 100%, 0);
+        transform: translate3d(0, 100%, 0)
+    }
+    to {
+        opacity: 1;
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0)
+    }
+}
+
+@keyframes fadeInUp-line-bookmark {
+    from {
+        opacity: 0;
+        -webkit-transform: translate3d(0, 100%, 0);
+        transform: translate3d(0, 100%, 0)
+    }
+    to {
+        opacity: 1;
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0)
+    }
+}
+
+.fadeInUp-line-bookmark {
+    visibility: visible;
+    -webkit-animation-duration: .3s;
+    animation-duration: .3s;
+    -webkit-animation-name: fadeInUp-line-bookmark;
+    animation-name: fadeInUp-line-bookmark
+}
+
+@-webkit-keyframes fadeOutDown-line-bookmark {
+    from {
+        opacity: 1;
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0)
+    }
+    to {
+        opacity: 0;
+        -webkit-transform: translate3d(0, 100%, 0);
+        transform: translate3d(0, 100%, 0)
+    }
+}
+
+@keyframes fadeOutDown-line-bookmark {
+    from {
+        opacity: 1
+    }
+    to {
+        opacity: 0;
+        -webkit-transform: translate3d(0, 100%, 0);
+        transform: translate3d(0, 100%, 0)
+    }
+}
+
+.fadeOutDown-line-bookmark {
+    visibility: hidden;
+    -webkit-animation-duration: .3s;
+    animation-duration: .3s;
+    -webkit-animation-name: fadeOutDown-line-bookmark;
+    animation-name: fadeOutDown-line-bookmark;
+    transition: visibility linear .3s
+}
+
+.note-line-bookmark:focus {
+    box-shadow: 0 0 0 0 transparent, 0 0 0 0 transparent, 0 2px 15px rgba(0, 0, 0, .3)
+}
