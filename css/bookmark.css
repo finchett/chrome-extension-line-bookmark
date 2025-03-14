@@ -1,14 +1,51 @@
 .pin-line-bookmark {
     position: absolute;
-    position: absolute;
+    z-index: 101;
     width: 20px;
     height: 20px;
     background: url(chrome-extension://__MSG_@@extension_id__/media/placeholder.svg);
-    background-size: contain;
-    z-index: 90
+    background-size: 80%;
+    /* Adjusts the size of the pin icon */
+    background-position: center;
+    /* Centers the pin icon */
+    background-repeat: no-repeat;
+    /* Prevents repeating the background image */
+    background-color: white;
+    /* White background */
+    border: 2px solid rgb(80, 80, 255);
+    /* Circle border */
+    border-radius: 11px;
+    /* Makes it a perfect circle */
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    /* Optional: subtle shadow */
+    transition: transform 0.15s ease;
 }
 
+.pin-line-bookmark:hover {
+    background: url(chrome-extension://__MSG_@@extension_id__/media/close.svg);
+    /* Close icon */
+    background-size: 80%;
+    /* Adjust the size of the close icon */
+    background-position: center;
+    /* Ensure the close icon is centered */
+    background-repeat: no-repeat;
+    /* Prevents the icon from repeating */
+    background-color: hsl(0, 10%, 90%);
+    ;
+    /* Transparent background */
+    cursor: pointer;
+    /* Indicates the element is clickable */
+    /* Slight scaling effect when hovered for emphasis */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    /* Softer, more modern shadow */
+    border: 2px solid hsl(0, 50%, 50%);
+    /* Red border for a delete-like effect */
+}
+
+
+
 @-webkit-keyframes bounceIn-line-bookmark {
+
     20%,
     40%,
     60%,
@@ -18,28 +55,34 @@
         -webkit-animation-timing-function: cubic-bezier(.215, .61, .355, 1);
         animation-timing-function: cubic-bezier(.215, .61, .355, 1)
     }
+
     0% {
         opacity: 0;
         -webkit-transform: scale3d(.3, .3, .3);
         transform: scale3d(.3, .3, .3)
     }
+
     20% {
         -webkit-transform: scale3d(1.1, 1.1, 1.1);
         transform: scale3d(1.1, 1.1, 1.1)
     }
+
     40% {
         -webkit-transform: scale3d(.9, .9, .9);
         transform: scale3d(.9, .9, .9)
     }
+
     60% {
         opacity: 1;
         -webkit-transform: scale3d(1.03, 1.03, 1.03);
         transform: scale3d(1.03, 1.03, 1.03)
     }
+
     80% {
         -webkit-transform: scale3d(.97, .97, .97);
         transform: scale3d(.97, .97, .97)
     }
+
     to {
         opacity: 1;
         -webkit-transform: scale3d(1, 1, 1);
@@ -48,6 +91,7 @@
 }
 
 @keyframes bounceIn-line-bookmark {
+
     20%,
     40%,
     60%,
@@ -57,28 +101,34 @@
         -webkit-animation-timing-function: cubic-bezier(.215, .61, .355, 1);
         animation-timing-function: cubic-bezier(.215, .61, .355, 1)
     }
+
     0% {
         opacity: 0;
         -webkit-transform: scale3d(.3, .3, .3);
         transform: scale3d(.3, .3, .3)
     }
+
     20% {
         -webkit-transform: scale3d(1.1, 1.1, 1.1);
         transform: scale3d(1.1, 1.1, 1.1)
     }
+
     40% {
         -webkit-transform: scale3d(.9, .9, .9);
         transform: scale3d(.9, .9, .9)
     }
+
     60% {
         opacity: 1;
         -webkit-transform: scale3d(1.03, 1.03, 1.03);
         transform: scale3d(1.03, 1.03, 1.03)
     }
+
     80% {
         -webkit-transform: scale3d(.97, .97, .97);
         transform: scale3d(.97, .97, .97)
     }
+
     to {
         opacity: 1;
         -webkit-transform: scale3d(1, 1, 1);
@@ -87,8 +137,8 @@
 }
 
 .bounceIn-line-bookmark {
-    -webkit-animation-duration: .5s;
-    animation-duration: .5s;
+    -webkit-animation-duration: .3s;
+    animation-duration: .3s;
     -webkit-animation-name: bounceIn-line-bookmark;
     animation-name: bounceIn-line-bookmark
 }
@@ -97,11 +147,13 @@
     from {
         opacity: 1
     }
+
     50% {
         opacity: 0;
-        -webkit-transform: scale3d(.3, .3, .3);
-        transform: scale3d(.3, .3, .3)
+        -webkit-transform: scale3d(.5, .5, .5);
+        transform: scale3d(.5, .5, .5)
     }
+
     to {
         opacity: 0
     }
@@ -111,11 +163,13 @@
     from {
         opacity: 1
     }
+
     50% {
         opacity: 0;
-        -webkit-transform: scale3d(.3, .3, .3);
-        transform: scale3d(.3, .3, .3)
+        -webkit-transform: scale3d(.5, .5, .5);
+        transform: scale3d(.5, .5, .5)
     }
+
     to {
         opacity: 0
     }
@@ -124,38 +178,38 @@
 .remove-pin-line-bookmark {
     -webkit-animation-name: zoomOut-line-bookmark;
     animation-name: zoomOut-line-bookmark;
-    -webkit-animation-duration: .5s;
-    animation-duration: .5s
+    -webkit-animation-duration: .3s;
+    animation-duration: .3s
 }
 
 .note-line-bookmark {
+    z-index: 100;
     max-width: 130px;
     background-color: #fff;
     color: rgba(0, 0, 0, .87);
     font-family: sans-serif;
-    border-radius: 1px;
-    padding: 8px 15px 7px 20px;
+    border-radius: 16px;
+    border-top-left-radius: 16px;
+    padding: 8px 15px 5px 20px;
     font-size: 14px;
-    line-height: 19px;
-    position: absolute;
-    left: 20px;
-    bottom: 30px;
+    margin-top: -4px;
+    margin-left: -4px;
+    padding-left: 50px;
     min-width: 130px;
     box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .14), 0 3px 1px -2px rgba(0, 0, 0, .2), 0 1px 5px 0 rgba(0, 0, 0, .12);
     visibility: hidden;
-    -webkit-transition-duration: .218s;
-    transition-duration: .218s;
+    -webkit-transition-duration: .3s;
+    transition-duration: .3s;
     -webkit-transition-property: -webkit-box-shadow, -webkit-transform;
     transition-property: box-shadow;
     -webkit-transition-timing-function: ease-in;
     transition-timing-function: ease-in;
-    z-index: 101
 }
 
 .noteText-line-bookmark {
     outline: 0;
     line-height: 19px;
-    padding: 8px 0
+    padding: 0px 0
 }
 
 .hoverShadow-line-bookmark {
@@ -181,6 +235,7 @@
         -webkit-transform: scale3d(.3, .3, .3);
         transform: scale3d(.3, .3, .3)
     }
+
     50% {
         opacity: 1
     }
@@ -192,6 +247,7 @@
         -webkit-transform: scale3d(.3, .3, .3);
         transform: scale3d(.3, .3, .3)
     }
+
     50% {
         opacity: 1
     }
@@ -200,9 +256,10 @@
 @-webkit-keyframes fadeInUp-line-bookmark {
     from {
         opacity: 0;
-        -webkit-transform: translate3d(0, 100%, 0);
-        transform: translate3d(0, 100%, 0)
+        -webkit-transform: translate3d(0, 10%, 0);
+        transform: translate3d(0, 10%, 0)
     }
+
     to {
         opacity: 1;
         -webkit-transform: translate3d(0, 0, 0);
@@ -213,9 +270,10 @@
 @keyframes fadeInUp-line-bookmark {
     from {
         opacity: 0;
-        -webkit-transform: translate3d(0, 100%, 0);
-        transform: translate3d(0, 100%, 0)
+        -webkit-transform: translate3d(0, 10%, 0);
+        transform: translate3d(0, 10%, 0)
     }
+
     to {
         opacity: 1;
         -webkit-transform: translate3d(0, 0, 0);
@@ -225,8 +283,8 @@
 
 .fadeInUp-line-bookmark {
     visibility: visible;
-    -webkit-animation-duration: .3s;
-    animation-duration: .3s;
+    -webkit-animation-duration: .2s;
+    animation-duration: .2s;
     -webkit-animation-name: fadeInUp-line-bookmark;
     animation-name: fadeInUp-line-bookmark
 }
@@ -237,10 +295,11 @@
         -webkit-transform: translate3d(0, 0, 0);
         transform: translate3d(0, 0, 0)
     }
+
     to {
         opacity: 0;
-        -webkit-transform: translate3d(0, 100%, 0);
-        transform: translate3d(0, 100%, 0)
+        -webkit-transform: translate3d(0, 10%, 0);
+        transform: translate3d(0, 10%, 0)
     }
 }
 
@@ -248,20 +307,21 @@
     from {
         opacity: 1
     }
+
     to {
         opacity: 0;
-        -webkit-transform: translate3d(0, 100%, 0);
-        transform: translate3d(0, 100%, 0)
+        -webkit-transform: translate3d(0, 10%, 0);
+        transform: translate3d(0, 10%, 0)
     }
 }
 
 .fadeOutDown-line-bookmark {
     visibility: hidden;
-    -webkit-animation-duration: .3s;
-    animation-duration: .3s;
+    -webkit-animation-duration: .2s;
+    animation-duration: .2s;
     -webkit-animation-name: fadeOutDown-line-bookmark;
     animation-name: fadeOutDown-line-bookmark;
-    transition: visibility linear .3s
+    transition: visibility linear .2s
 }
 
 .note-line-bookmark:focus {

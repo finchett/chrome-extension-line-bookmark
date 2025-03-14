@@ -20,13 +20,14 @@
   "content_scripts": [
         {
         "matches": ["<all_urls>"],
-        "css": ["css/bookmark.min.css"],
-        "js": ["js/bookmark.min.js"],
+        "css": ["css/bookmark.css"],
+        "js": ["js/bookmark.js"],
         "run_at": "document_end"
         }
     ],
   "web_accessible_resources": [
-    "media/placeholder.svg"
+    "media/placeholder.svg",
+    "media/close.svg"
   ],
   "offline_enabled": true
 }
