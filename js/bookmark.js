@@ -254,17 +254,20 @@ function scrollToNextPin() {
     // Find the currently active pin index
     const currentActivePin = sortedPins.find(pin => pin.y > window.scrollY) || sortedPins[sortedPins.length - 1];
     let currentActiveIndex = sortedPins.indexOf(currentActivePin);
-    
+
     // Calculate the next index, wrapping around to the beginning if necessary
     nextIndex = (currentActiveIndex + 1) % sortedPins.length;
     currentActivePin.hideNote()
   }
-  
+
 
   const nextPin = sortedPins[nextIndex];
 
   if (nextPin) {
-    nextPin.showNote()
+    if (nextPin.note != "") {
+      nextPin.showNote()
+
+    }
     const offset = 100;
     window.scrollTo({
       top: nextPin.y - offset,
