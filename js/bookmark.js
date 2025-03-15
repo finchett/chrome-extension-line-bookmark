@@ -180,10 +180,10 @@ function removePin(target) {
       const pinInstance = pins[index];
       pins.splice(index, 1);
       pinInstance.removeElement();
-      pins.removeItem(index)
     }
     target.remove();
     savePins();
+    pins.remove(target)
   }, 200);
 }
 
