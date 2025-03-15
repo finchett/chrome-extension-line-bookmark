@@ -3,46 +3,43 @@
 
 <head>
     <title>Line Bookmark</title>
-    <style type=text/css>
+    <style type="text/css">
         html,
         body {
-            font-family: sans-serif;
+            font-family: "Inter", sans-serif;
             font-size: 14px;
             margin: 0;
-            min-height: 200px;
             padding: 0;
             width: 400px;
-
+            color: #333;
         }
 
         .popup {
             width: 100%;
-            height: auto;
-            max-width: 100%;
             display: flex;
             flex-direction: column;
-
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
         }
 
         .main {
             display: flex;
-            flex: 1;
-            padding: 16px 20px 17px;
+            padding: 16px 20px;
         }
 
         .icon-wrapper {
-            align-self: flex-start;
             display: flex;
+            align-items: center; /* Vertically center the icon */
             padding: 6px;
-            position: relative;
         }
 
         .content {
-            -webkit-margin-start: 24px;
+            margin-left: 14px;
             display: flex;
-            flex: 1;
             flex-direction: column;
-            overflow: hidden;
+            flex: 1; /* Allow content to grow */
+            justify-content: center; /* Vertically center content */
         }
 
         .icon {
@@ -50,123 +47,115 @@
             width: 36px;
             height: 36px;
             background-size: cover;
-
-
-
         }
 
         .title {
-            display: block;
             line-height: 20px;
             margin-bottom: 8px;
-            padding: 0;
-            position: relative;
-
-            color: rgb(33, 33, 33);
             font-size: 16px;
-
+            color: #212121;
         }
 
         .inst {
             flex: 1;
-
-
         }
 
         .inst ul {
             width: 100%;
-            padding: 2px 2px;
+            padding: 0; /* Remove padding */
             margin: 0;
+            list-style-type: none; /* Remove bullet points */
         }
 
         .inst ul li {
-
-            color: rgba(117, 117, 117);
+            color: #757575;
             font-size: 13px;
-            font-family: sans-serif;
-            font-weight: 400;
-            padding: 5px;
-            display: inline-block;
-
+            padding: 3px 0; /* Adjusted padding */
+            list-style: square;
         }
 
         .inst span {
             color: rgba(33, 33, 33, 0.6);
             font-size: 12px;
             font-weight: bold;
+            display: block; /* Make span a block element */
+            margin-bottom: 5px; /* Add margin below span */
         }
 
         .button-strip {
-            -webkit-margin-end: 20px;
-            box-sizing: border-box;
-            flex-shrink: 0;
-            height: 38px;
-            padding-bottom: 8px;
-            padding-top: 4px;
-        }
-
-        hr {
-            border: none;
-            height: 0.5px;
-            /* color: rgba(33,33,33,0.6); */
-            width: 90%;
-            background-color: rgba(33, 33, 33, 0.4);
-        }
-
-        .layout {
-            flex-direction: row;
+            padding: 10px 20px; /* Adjusted padding */
             display: flex;
             justify-content: flex-end;
+            margin-left: 20px;
         }
 
         #button {
             color: gray;
-            pointer-events: none;
             font-size: 14px;
-            font-family: sans-serif;
             font-weight: 700;
-            float: right;
-            margin-right: 30px;
             cursor: pointer;
             background: none;
             outline: 0;
             border: 0;
-            padding: 5px 10px 5px 10px;
-            border-radius: 3px;
+            padding: 8px 15px; /* Adjusted padding */
+            border-radius: 15px;
+            transition: background 0.2s ease;
         }
 
         #button:active {
             background: rgba(85, 138, 254, 0.2);
         }
+
+        /* Dark Mode */
+        @media (prefers-color-scheme: dark) {
+            body {
+                background-color: #404040;
+                color: #ddd;
+            }
+
+            .title,
+            .inst span {
+                color: #ddd;
+            }
+
+            .inst ul li {
+                color: #999;
+            }
+
+            .popup{
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            }
+
+            #button {
+                color: #ccc;
+            }
+        }
     </style>
 </head>
 
 <body>
-    <div class=popup>
-        <div class=main>
-            <div class=icon-wrapper>
-                <div class=icon> </div>
+    <div class="popup">
+        <div class="main">
+            <div class="icon-wrapper">
+                <div class="icon"> </div>
             </div>
-            <div class=content>
-                <div class=title>Line Bookmark</div>
-                <div class=inst> <span>Instructions</span>
+            <div class="content">
+                <div class="title">Line Bookmark</div>
+                <div class="inst"><span>Instructions</span>
                     <ul>
-                        <li>Alt + Left Click anywhere on the screen to create a pin</li>
-                        <li>Click on a pin to create a note</li>
+                        <li>Alt + left click to create a pin.</li>
+                        <li>Add notes to pin.</li>
+                        <li>Click a pin to remove it.</li>
                         <li>Ctrl + X to quickly scroll between pins</li>
-                        <li>Alt + Left Click on a pin to remove it</li>
                     </ul>
                 </div>
             </div>
         </div>
-        <hr>
-        <div class=button-strip>
-            <div class=layout>
-                <div id=button> REMOVE ALL </div>
-            </div>
+        <div class="button-strip">
+            <div id="button">REMOVE ALL</div>
         </div>
     </div>
-    <script src=./js/popup.min.js></script>
+    <script src="./js/popup.min.js"></script>
 </body>
 
 </html>
