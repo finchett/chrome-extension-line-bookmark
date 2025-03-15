@@ -10,7 +10,7 @@ class Pin {
 
     this.createElements();
     document.documentElement.appendChild(this.pinParent);
-  
+
   }
 
   createElements() {
@@ -72,11 +72,18 @@ class Pin {
   }
 
   showNote() {
-    if (!this.pinParent) return;
+    if (!this.pinParent || !this.noteDiv) return;
 
     const pinRect = this.pinParent.getBoundingClientRect();
     const viewportWidth = window.innerWidth;
-    const noteWidth = 200;
+
+    // Temporarily reset marginLeft to 0 to get accurate width
+    const originalMarginLeft = this.noteDiv.style.marginLeft;
+    this.noteDiv.style.marginLeft = '0px';
+
+    const noteWidth = this.noteDiv.offsetWidth;
+
+    this.noteDiv.style.marginLeft = originalMarginLeft; // Restore original margin
 
     let newMarginLeft;
     if (pinRect.left + noteWidth + 20 > viewportWidth) {
@@ -216,11 +223,11 @@ function removeAllPins() {
 function loadPins() {
   const storedPins = localStorage.getItem(window.location.href);
   if (storedPins) {
-      const pinData = JSON.parse(storedPins);
-      pinData.forEach(data => {
-          const pin = new Pin(data.x, data.y, data.index, data.topScroll, data.note, data.stick);
-          pins.push(pin);
-      });
+    const pinData = JSON.parse(storedPins);
+    pinData.forEach(data => {
+      const pin = new Pin(data.x, data.y, data.index, data.topScroll, data.note, data.stick);
+      pins.push(pin);
+    });
   }
 }
 
@@ -229,7 +236,7 @@ window.addEventListener('load', loadPins);
 
 document.addEventListener('keydown', (e) => {
   if (e.ctrlKey && e.key === 'x') {
-      scrollToNextPin();
+    scrollToNextPin();
   }
 });
 
