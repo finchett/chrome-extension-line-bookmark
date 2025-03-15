@@ -1,5 +1,11 @@
-# line-bookmark
-A small chrome extension I wished existed so I made it. It basically adds pins on pages with notes and saves them on localStorage to be found later on when revisiting the page. The main reason I made this is because I wanted to easily switch between different lines on a page and not have to scroll back manually and search for them. It does not support pdf files though.
-You can find it here:
+# Simple pins
+https://github.com/user-attachments/assets/394a9ccc-74ad-4d4c-9e05-337265c95b1b
 
-https://goo.gl/byn4R1
+**Quickly mark and navigate long documents.**
+
+* `Alt + left click`: Add a pin.
+* `Ctrl + X`: Cycle through pins.
+* Click a pin: Remove it.
+
+---
+Forked from [alizeaiter/chrome-extension-line-bookmark](https://github.com/alizeaiter/chrome-extension-line-bookmark).

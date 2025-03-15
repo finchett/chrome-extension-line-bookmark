@@ -1,32 +1,35 @@
 {
-  "name": "Line Bookmark",
-  "version": "0.0.4",
-  "manifest_version": 2,
-  "description": "Add persistent line bookmarks with notes on different places on a page and easily scroll between them",
-  "author":"Ali Zeaiter",
+  "name": "Simple Pins",
+  "version": "0.0.5",
+  "manifest_version": 3,
+  "description": "Add persistent pins to long documents and scroll between them easily.",
+  "author": "Sam Finchett",
   
   "icons": {
     "16": "icons/icon16.png",
     "48": "icons/icon48.png",
     "128": "icons/icon128.png"
   },
-  "browser_action": {
+  "action": {
     "default_popup": "popup.html"
-    },
-    "permissions": [
-    "activeTab"
-],
+  },
+  "permissions": [
+    "storage"
+  ],
   "default_locale": "en",
   "content_scripts": [
-        {
-        "matches": ["<all_urls>"],
-        "css": ["css/bookmark.min.css"],
-        "js": ["js/bookmark.min.js"],
-        "run_at": "document_end"
-        }
-    ],
+    {
+      "matches": ["<all_urls>"],
+      "css": ["css/bookmark.min.css"],
+      "js": ["js/bookmark.js"],
+      "run_at": "document_end"
+    }
+  ],
   "web_accessible_resources": [
-    "media/placeholder.svg"
+    {
+      "resources": ["media/placeholder.svg", "media/close.svg"],
+      "matches": ["<all_urls>"]
+    }
   ],
   "offline_enabled": true
 }

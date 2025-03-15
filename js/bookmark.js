@@ -1,368 +1,281 @@
-
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-
-var b = document.documentElement;
-var timer = void 0;
-var timeOutRun = void 0;
-
-var pins = [];
-var scrolls = [];
-var filtered = void 0;
-var alt = false;
-
-function makeCounter() {
-  var i = 0;
-  return function () {
-    return i++;
-  };
-}
-
-var id = makeCounter();
-
-var Pin = function () {
-  function Pin(x, y, index, top_scroll) {
-    var note = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : "";
-
-    _classCallCheck(this, Pin);
-
+class Pin {
+  constructor(x, y, index, topScroll, note = "") {
     this.index = index;
-    this.pin = document.createElement("div");
-    this.pin.style.left = x - 9.5 + "px";
-    this.pin.style.top = y - 20 + "px";
-    this.pin.classList.add("pin-line-bookmark");
-    this.pin.classList.add("bounceIn-line-bookmark");
-    this.pin.setAttribute("index", index);
-    b.appendChild(this.pin);
-    this.pin.addEventListener("click", this, false);
-    this.noteDiv = document.createElement("div");
-    this.noteDiv.classList.add("note-line-bookmark");
-    this.pin.appendChild(this.noteDiv);
-
-    this.noteText = document.createElement("div");
-    this.noteText.classList.add("noteText-line-bookmark");
-    this.noteText.setAttribute("contenteditable", "true");
-    this.noteText.setAttribute("placeholder", "Write a note...");
-    this.noteText.innerHTML = note;
-    this.noteText.addEventListener("keyup", this, false);
-    this.noteDiv.appendChild(this.noteText);
-
-    this.top_scroll = top_scroll;
     this.x = x;
     this.y = y;
+    this.topScroll = topScroll;
     this.note = note;
-    this.scroll_from = false;
+    this.stick = false;
+
+    this.createElements();
+    document.documentElement.appendChild(this.pinParent);
   }
 
-  _createClass(Pin, [{
-    key: "handleEvent",
-    value: function handleEvent(e) {
-      switch (e.type) {
-        case "click":
-          this.click(e);
-          break;
-        case "keyup":
-          this.keyUp(e);
+  createElements() {
+    // Create parent container
+    this.pinParent = document.createElement("div");
+    this.pinParent.classList.add("pin-parent");
+    this.pinParent.style.left = `${this.x - 9.5}px`;
+    this.pinParent.style.top = `${this.y - 20}px`;
 
-      }
-    }
-  }, {
-    key: "click",
-    value: function click(e) {
-      var _this = this;
+    // Create the pin element.
+    this.pin = document.createElement("div");
+    this.pin.className = "pin-line-bookmark bounceIn-line-bookmark";
+    this.pin.setAttribute("data-index", this.index);
+    this.pin.addEventListener("mouseenter", this.handlePinMouseEnter.bind(this));
+    this.pin.addEventListener("mouseenter", () => this.pin.classList.add("hover"));
+    this.pin.addEventListener("mouseleave", () => this.pin.classList.remove("hover"));
+    this.pin.addEventListener("click", (e) => {
+      e.stopPropagation();
+      removePin(this.pin);
+    });
 
-      if (alt === false) {
-        this.noteDiv.classList.add("fadeInUp-line-bookmark");
-        this.noteDiv.classList.remove("fadeOutDown-line-bookmark");
-      }
+    this.pinParent.appendChild(this.pin);
 
-      this.noteText.addEventListener("focus", function () {
+    // Create the note container.
+    this.noteDiv = document.createElement("div");
+    this.noteDiv.className = "note-line-bookmark";
+    this.noteDiv.addEventListener("mouseenter", () => clearTimeout(this.mouseleaveTimeout));
+    this.noteDiv.addEventListener("click", (e) => {
+      this.stick = true;
+      e.stopPropagation();
+    });
+    this.noteDiv.addEventListener("mouseup", (e) => e.stopPropagation());
+    this.pinParent.addEventListener("mouseleave", () => {
+      if (!this.stick) this.hideNote();
+    });
 
-        _this.noteText.parentElement.classList.add("hoverShadow-line-bookmark");
-      });
-      this.noteText.addEventListener("blur", function () {
-        _this.noteText.parentElement.classList.remove("hoverShadow-line-bookmark");
-      });
+    this.pinParent.appendChild(this.noteDiv);
+
+    // Create the editable note text.
+    this.noteText = document.createElement("div");
+    this.noteText.className = "noteText-line-bookmark";
+    this.noteText.setAttribute("contenteditable", "true");
+    this.noteText.setAttribute("placeholder", "Write a note...");
+    this.noteText.innerHTML = this.note;
+    this.noteText.addEventListener("keyup", () => this.updateNote());
+    this.noteDiv.appendChild(this.noteText);
+  }
+
+  handlePinMouseEnter() {
+    this.showNote();
+  }
+
+  showNote() {
+    if (!this.pinParent || !this.noteDiv) return;
+
+    this.noteDiv.style.display = "block"
+
+    const pinRect = this.pinParent.getBoundingClientRect();
+    const viewportWidth = window.innerWidth;
+
+    // Temporarily reset marginLeft to get accurate note width.
+    // Note actually here needed but makes it easier to handle dynamic widths
+    const originalMarginLeft = this.noteDiv.style.marginLeft;
+    this.noteDiv.style.marginLeft = "0px";
+    const noteWidth = this.noteDiv.offsetWidth;
+    this.noteDiv.style.marginLeft = originalMarginLeft;
+
+    // Adjust note position if it would overflow the viewport.
+    const newMarginLeft =
+      pinRect.left + noteWidth + 20 > viewportWidth ? `-${noteWidth - 20}px` : "0px";
+    this.noteDiv.style.marginLeft = newMarginLeft;
+
+    this.noteDiv.classList.add("fadeIn");
+    
+    // The fadeIn class already controls visibility via CSS.
+    this.noteDiv.style.visibility = "visible";
+  }
+
+  hideNote() {
+    if (!this.pinParent) return;
+    this.noteDiv.classList.remove("fadeIn");
+    this.stick = false;
+
+    setTimeout(() => {
+      this.noteDiv.style.display = "none";
+    }, 200);
+  }
+
+  updateNote() {
+    delay(() => {
+      this.note = this.noteText.innerHTML;
       savePins();
-    }
-  }, {
-    key: "keyUp",
-    value: function keyUp(e) {
-      var _this2 = this;
+    }, 1000);
+  }
 
-      delay(function () {
-        _this2.note = _this2.noteText.innerHTML;
-        savePins();
-      }, 1000);
-    }
-  }, {
-    key: "Top",
-    value: function Top() {
-      return this.top_scroll;
-    }
-  }, {
-    key: "X",
-    value: function X() {
-      return this.x;
-    }
-  }, {
-    key: "Y",
-    value: function Y() {
-      return this.y;
-    }
-  }, {
-    key: "scrollFromPin",
-    value: function scrollFromPin() {
-      this.scroll_from = true;
-    }
-  }, {
-    key: "removeScrollFromPin",
-    value: function removeScrollFromPin() {
-      this.scroll_from = false;
-    }
-  }, {
-    key: "getScrollFrom",
-    value: function getScrollFrom() {
-      return this.scroll_from;
-    }
-  }, {
-    key: "removeElement",
-    value: function removeElement() {
+  removeElement() {
+    if (!this.pinParent) return;
+    const removeElements = () => {
       this.pin.remove();
-    }
-  }]);
+      this.noteDiv.remove();
+      this.noteText.remove();
+      this.pinParent.remove();
+      this.pinParent = null;
+    };
 
-  return Pin;
-}();
-
-b.addEventListener("click", function (e) {
-  var x = e.pageX;
-  var y = e.pageY;
-  var near = false;
-
-  for (var i = pins.length - 1; i >= 0; i--) {
-    if (pins[i] != -1) {
-      var pinX = pins[i].X();
-      var pinY = pins[i].Y();
-      var R = Math.sqrt(Math.pow(Math.abs(x - pinX), 2) + Math.pow(Math.abs(y - pinY), 2));
-
-      if (R < 10) {
-        near = true;
-
-        break;
-      }
-    }
-  }
-  if (alt === true) {
-    if (e.target.classList.contains("pin-line-bookmark")) {
-      e.target.classList.add("remove-pin-line-bookmark");
-      setTimeout(function () {
-
-        var indexValue = e.target.getAttribute("index");
-        var index = void 0;
-
-        for (var i = pins.length - 1; i >= 0; i--) {
-          if (pins[i].index == indexValue) {
-
-            index = i;
-            pins.splice(i, 1);
-
-            break;
-          }
-        }
-        e.target.remove();
-        var pinElements = document.querySelectorAll(".pin-line-bookmark");
-
-        var checkTrue = false;
-        for (i = 0; i < pins.length; i++) {
-          if (pins[i].getScrollFrom() == true) {
-            checkTrue = true;
-            break;
-          }
-        }
-        if (checkTrue == false) {
-          if (pins[index]) {
-            pins[index].scrollFromPin();
-          } else if (pins[index - 1]) {
-            pins[index - 1].scrollFromPin();
-          } else if (pins[index + 1]) {
-            pins[index + 1].scrollFromPin();
-          } else {
-            pins = [];
-          }
-        }
-
-        filtered = filterPins();
-
-        savePins();
-      }, 450);
+    if (this.noteDiv.classList.contains("fadeIn")) {
+      this.noteDiv.addEventListener("transitionend", removeElements, { once: true });
     } else {
-      if (near == false && !e.target.classList.contains("noteText-line-bookmark") && !e.target.classList.contains("note-line-bookmark")) {
-
-        var _pin = new Pin(x, y, id(), b.scrollTop);
-        pins.push(_pin);
-
-        for ( i = 0; i < pins.length; i++) {
-          if (pins[i].Top() == pins[pins.length - 1].Top()) {
-            pins[i].scrollFromPin();
-          } else {
-            pins[i].removeScrollFromPin();
-          }
-        }
-
-        sortPins(pins);
-        filtered = filterPins();
-        savePins();
-      }
+      removeElements();
     }
-  }
-});
-
-b.addEventListener("mouseup", function (e) {
-
-  if (!e.target.classList.contains("pin-line-bookmark") && !e.target.classList.contains("note-line-bookmark") && !e.target.classList.contains("noteText-line-bookmark")) {
-
-    var noteDiv = document.querySelectorAll(".note-line-bookmark");
-    for (var i = 0; i < noteDiv.length; i++) {
-      var note = noteDiv[i];
-      note.classList.remove("fadeInUp-line-bookmark");
-      note.classList.add("fadeOutDown-line-bookmark");
-    }
-  }
-});
-
-var reOrder = function reOrder(els) {
-  var i = 0;
-  for (i; i < els.length; i++) {
-    els[i].setAttribute("index", i);
-  }
-};
-
-var noteText = document.querySelectorAll(".noteText-line-bookmark");
-
-var _loop = function _loop() {
-  var noteEl = noteText[i];
-  noteEl.addEventListener("focus", function () {
-
-    noteEl.parentElement.classList.add("hoverShadow-line-bookmark");
-  });
-  noteEl.addEventListener("blur", function () {
-    noteEl.parentElement.classList.remove("hoverShadow-line-bookmark");
-  });
-};
-
-for (var i = 0; i < noteText.length; i++) {
-  _loop();
-}
-
-b.addEventListener("keyup", function (e) {
-
-  alt = false;
-});
-b.addEventListener("keydown", function (e) {
-
-  if (e.altKey == true) {
-    alt = true;
-  }
-  if (e.keyCode == 88 && e.ctrlKey == true && e.target.tagName != "INPUT" && e.target.tagName != "TEXTAREA") {
-    if (pins.length > 0) {
-      var index = void 0;
-      for (var i = 0; i < filtered.length; i++) {
-        if (filtered[i].getScrollFrom() == true) {
-          index = i;
-          break;
-        }
-      }
-
-      var comingIndex = void 0;
-      if (index == 0) {
-        comingIndex = filtered.length - 1;
-      } else {
-        comingIndex = index - 1;
-      }
-      b.scrollTop = filtered[comingIndex].Top();
-      for (i = 0; i < pins.length; i++) {
-        if (pins[i].Top() == filtered[comingIndex].Top()) {
-          pins[i].scrollFromPin();
-        } else {
-          pins[i].removeScrollFromPin();
-        }
-      }
-    }
-  }
-});
-var sortPins = function sortPins(arr) {
-
-  arr.sort(function (a, b) {
-    return a.Top() - b.Top();
-  });
-};
-
-function filterPins() {
-  var uniqIds = {};
-  var filtered = pins.filter(function (obj) {
-    return !uniqIds[obj.Top()] && (uniqIds[obj.Top()] = true);
-  });
-  return filtered;
-}
-
-var delay = function () {
-  var timer = 0;
-  return function (callback, ms) {
-    clearTimeout(timer);
-    timer = setTimeout(callback, ms);
-  };
-}();
-var savePins = function savePins() {
-  localStorage.setItem(window.location.href, JSON.stringify(pins));
-  var storageItem = JSON.parse(localStorage.getItem(window.location.href)).length;
-  if (storageItem === 0) {
-    localStorage.removeItem(window.location.href);
-  }
-};
-var storage = localStorage.getItem(window.location.href);
-if (storage !== null) {
-  storage = JSON.parse(storage);
-  for (var i = 0; i < storage.length; i++) {
-    var p = storage[i];
-    var pin = new Pin(p.x, p.y, id(), p.top_scroll, p.note);
-    pin.scroll_from = p.scroll_from;
-    pins.push(pin);
-    filtered = filterPins();
   }
 }
 
-chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
-  var pinStatus = void 0;
-  var storage = localStorage.getItem(window.location.href);
+// Global Stuff
+const pins = [];
+let altKeyPressed = false;
+const generateId = (() => {
+  let id = 0;
+  return () => id++;
+})();
 
-  if (storage !== null) {
-    pinStatus = "full";
-  } else {
-    pinStatus = "empty";
+document.documentElement.addEventListener("click", (e) => {
+  if (altKeyPressed) {
+    handleAltClick(e);
+    e.stopPropagation();
   }
+});
+
+document.documentElement.addEventListener("mouseup", (e) => {
+  pins.forEach((pin) => {
+    if (pin.noteDiv && pin.noteDiv.classList.contains("fadeIn") && !pin.noteDiv.contains(e.target)) {
+      pin.hideNote();
+    }
+  });
+});
+
+document.documentElement.addEventListener("keydown", (e) => {
+  if (e.altKey) altKeyPressed = true;
+});
+
+document.documentElement.addEventListener("keyup", () => {
+  altKeyPressed = false;
+});
+
+function handleAltClick(e) {
+  if (
+    !isNearExistingPin(e.pageX, e.pageY) &&
+    !e.target.closest(".noteText-line-bookmark, .note-line-bookmark")
+  ) {
+    addNewPin(e.pageX, e.pageY);
+  }
+}
+
+function addNewPin(x, y) {
+  const pin = new Pin(x, y, generateId(), document.documentElement.scrollTop);
+  pin.showNote();
+  pins.push(pin);
+  savePins();
+}
+
+function removePin(target) {
+  target.classList.add("remove-pin-line-bookmark");
+  setTimeout(() => {
+    const pinIndex = pins.findIndex((pin) => pin.index == target.getAttribute("data-index"));
+    if (pinIndex !== -1) {
+      const [removedPin] = pins.splice(pinIndex, 1);
+      removedPin.removeElement();
+    }
+    target.remove();
+    savePins();
+  }, 200);
+}
+
+function isNearExistingPin(x, y) {
+  return pins.some((pin) => Math.hypot(x - pin.x, y - pin.y) < 10);
+}
+
+function savePins() {
+  const pinData = pins.map(({ x, y, index, topScroll, note }) => ({ x, y, index, topScroll, note }));
+  const cleanUrl = window.location.origin + window.location.pathname;
+  
+  chrome.storage.local.set({ [cleanUrl]: pinData });
+}
+
+
+let delayTimer;
+function delay(callback, ms) {
+  clearTimeout(delayTimer);
+  delayTimer = setTimeout(callback, ms);
+}
+
+// chrome.runtime message handling.
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   switch (message.type) {
     case "getStatus":
-      sendResponse(pinStatus);
-
+      sendResponse(pins.length > 0 ? "full" : "empty");
       break;
     case "remove":
-      removePins();
+      removeAllPins();
       sendResponse("done");
-
       break;
     default:
-      console.error("Unrecognised message: ", message);
+      console.error("Unrecognized message:", message);
   }
 });
 
-var removePins = function removePins() {
-  for (var i = 0; i < pins.length; i++) {
-    pins[i].removeElement();
+function removeAllPins() {
+  pins.forEach((pin) => pin.removeElement());
+  pins.length = 0;
+  const cleanUrl = window.location.origin + window.location.pathname;
+  chrome.storage.local.remove(cleanUrl);
+}
+
+
+function loadPins() {
+  const cleanUrl = window.location.origin + window.location.pathname;
+  chrome.storage.local.get(cleanUrl, (result) => {
+    if (result[cleanUrl]) {
+      const pinData = result[cleanUrl];
+      pinData.forEach((data) => {
+        const pin = new Pin(data.x, data.y, data.index, data.topScroll, data.note);
+        pins.push(pin);
+      });
+    }
+  });
+}
+
+window.addEventListener("load", loadPins);
+
+document.addEventListener("keydown", (e) => {
+  if (e.ctrlKey && e.key === "x") {
+    scrollToNextPin();
   }
-  pins = [];
-  localStorage.removeItem(window.location.href);
-};
+});
+
+function scrollToNextPin() {
+  if (pins.length === 0) return;
+
+  const sortedPins = [...pins].sort((a, b) => a.y - b.y);
+
+  let nextPinIndex = 0;
+  let previousPinIndex = -1;
+
+  if (sortedPins.length > 1) {
+    nextPinIndex = sortedPins.findIndex((pin) => pin.y > window.scrollY + 120)
+
+    if (nextPinIndex == -1) {
+      previousPinIndex = sortedPins.length - 1
+      nextPinIndex = 0
+    } else {
+      previousPinIndex = nextPinIndex - 1
+    }
+  }
+
+  const nextPin = sortedPins[nextPinIndex];
+
+  if (previousPinIndex > 0) {
+    const previousPin = sortedPins[previousPinIndex];
+    previousPin.hideNote()
+  }
+
+  if (nextPin) {
+    if (nextPin.note !== "") nextPin.showNote();
+    const offset = 100;
+    window.scrollTo({
+      top: nextPin.y - offset,
+      behavior: "smooth",
+    });
+  }
+}
