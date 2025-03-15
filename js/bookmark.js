@@ -82,7 +82,7 @@ class Pin {
     if (pinRect.left + noteWidth + 20 > viewportWidth) {
       newMarginLeft = `-${noteWidth - 20}px`;
     } else {
-      newMarginLeft = `-5px`;
+      newMarginLeft = `-0px`;
     }
 
     if (this.noteDiv.style.marginLeft !== newMarginLeft) {

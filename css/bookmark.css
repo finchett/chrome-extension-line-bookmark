@@ -7,72 +7,14 @@
     border: 1px solid #d3d3d3;
     border-radius: 50%;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-    transition: transform 0.15s ease;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    cursor: pointer;
 }
 
 .pin-line-bookmark:hover {
     background: url(chrome-extension://__MSG_@@extension_id__/media/close.svg) center / 80% no-repeat #e0e0e0;
     border-color: #b0b0b0;
-    cursor: pointer;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-}
-
-.note-line-bookmark:focus-within {
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18) !important;
-    transform: translateY(-2px) !important;
-}
-
-/* Dark Mode */
-/* Dark Mode */
-@media (prefers-color-scheme: dark) {
-    .pin-line-bookmark {
-        background: url(chrome-extension://__MSG_@@extension_id__/media/placeholder.svg) center / 80% no-repeat #444;
-        /* Lighter dark */
-        border: 1px solid #666;
-        /* Slightly lighter border */
-        box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
-        /* Lighter shadow */
-    }
-
-    .pin-line-bookmark:hover {
-        background: url(chrome-extension://__MSG_@@extension_id__/media/close.svg) center / 80% no-repeat #555;
-        /* Slightly lighter hover */
-        border-color: #888;
-        /* Lighter hover border */
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-        /* Lighter hover shadow */
-    }
-
-    .note-line-bookmark:focus-within {
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3) !important;
-        transform: translateY(-2px) !important;
-    }
-
-    .note-line-bookmark {
-        background: #404040;
-        /* Slightly lighter note background */
-        color: #ddd;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-        /* Slightly stronger shadow */
-    }
-
-    .noteText-line-bookmark {
-        background: rgba(255, 255, 255, 0.08);
-        /* Slightly lighter background */
-        color: #ddd;
-        border: 1px solid rgba(255, 255, 255, 0.15);
-        /* Slightly stronger border */
-    }
-
-    .noteText-line-bookmark:focus {
-        background: rgba(255, 255, 255, 0.15);
-        /* Lighter focus background */
-    }
-
-    .note-line-bookmark:hover {
-        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
-        /* Stronger hover shadow */
-    }
 }
 
 .note-line-bookmark {
@@ -82,13 +24,14 @@
     background: #fff;
     color: #333;
     font-family: "Inter", sans-serif;
-    border-radius: 12px;
+    border-radius: 15px;
     font-size: 14px;
-    margin-top: 33px;
+    margin-top: 28px;
     visibility: hidden;
     opacity: 0;
     transition: opacity 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
     transform: translateY(10%);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
 .note-line-bookmark.fadeIn {
@@ -97,8 +40,13 @@
     transform: translateY(0);
 }
 
-.note-line-bookmark:hover {
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+.note-line-bookmark:hover,
+.note-line-bookmark:focus {
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+}
+
+.note-line-bookmark:focus-within {
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
 }
 
 .noteText-line-bookmark {
@@ -106,6 +54,7 @@
     line-height: 1.5;
     padding: 8px;
     background: rgba(0, 0, 0, 0.05);
+    border-radius: 15px;
     font-size: 14px;
     color: #333;
     transition: background 0.2s ease;
@@ -116,9 +65,10 @@
     background: rgba(0, 0, 0, 0.08);
 }
 
+/* Light mode placeholder */
 [contenteditable=true]:empty:before {
     content: attr(placeholder);
-    color: rgba(0, 0, 0, 0.54);
+    color: #666;
 }
 
 /* Animations */
@@ -127,24 +77,19 @@
         opacity: 0;
         transform: scale(0.3);
     }
-
     20% {
         transform: scale(1.1);
     }
-
     40% {
         transform: scale(0.9);
     }
-
     60% {
         opacity: 1;
         transform: scale(1.03);
     }
-
     80% {
         transform: scale(0.97);
     }
-
     100% {
         transform: scale(1);
     }
@@ -159,7 +104,6 @@
         opacity: 0;
         transform: scale(0.5);
     }
-
     100% {
         opacity: 0;
     }
@@ -174,7 +118,6 @@
         opacity: 0;
         transform: scale(0.3);
     }
-
     50% {
         opacity: 1;
     }
@@ -185,6 +128,47 @@
     visibility: visible;
 }
 
-.note-line-bookmark:focus {
-    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.3);
+/* Dark Mode */
+@media (prefers-color-scheme: dark) {
+    .pin-line-bookmark {
+        background: url(chrome-extension://__MSG_@@extension_id__/media/placeholder.svg) center / 80% no-repeat #444;
+        border: 1px solid #666;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+    }
+
+    .pin-line-bookmark:hover {
+        background: url(chrome-extension://__MSG_@@extension_id__/media/close.svg) center / 80% no-repeat #555;
+        border-color: #888;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .note-line-bookmark,
+    .noteText-line-bookmark {
+        background: #404040;
+        color: #ddd;
+    }
+
+    .note-line-bookmark {
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .noteText-line-bookmark {
+        border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .noteText-line-bookmark:focus {
+        background: rgba(255, 255, 255, 0.15);
+    }
+
+    .note-line-bookmark:hover,
+    .note-line-bookmark:focus,
+    .note-line-bookmark:focus-within {
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+    }
+
+    /* Dark mode placeholder */
+    [contenteditable=true]:empty:before {
+        content: attr(placeholder);
+        color: #999;
+    }
 }
