@@ -3,327 +3,188 @@
     z-index: 101;
     width: 20px;
     height: 20px;
-    background: url(chrome-extension://__MSG_@@extension_id__/media/placeholder.svg);
-    background-size: 80%;
-    /* Adjusts the size of the pin icon */
-    background-position: center;
-    /* Centers the pin icon */
-    background-repeat: no-repeat;
-    /* Prevents repeating the background image */
-    background-color: white;
-    /* White background */
-    border: 2px solid rgb(80, 80, 255);
-    /* Circle border */
-    border-radius: 11px;
-    /* Makes it a perfect circle */
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
-    /* Optional: subtle shadow */
+    background: url(chrome-extension://__MSG_@@extension_id__/media/placeholder.svg) center / 80% no-repeat #f0f0f0;
+    border: 1px solid #d3d3d3;
+    border-radius: 50%;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
     transition: transform 0.15s ease;
 }
 
 .pin-line-bookmark:hover {
-    background: url(chrome-extension://__MSG_@@extension_id__/media/close.svg);
-    /* Close icon */
-    background-size: 80%;
-    /* Adjust the size of the close icon */
-    background-position: center;
-    /* Ensure the close icon is centered */
-    background-repeat: no-repeat;
-    /* Prevents the icon from repeating */
-    background-color: hsl(0, 10%, 90%);
-    ;
-    /* Transparent background */
+    background: url(chrome-extension://__MSG_@@extension_id__/media/close.svg) center / 80% no-repeat #e0e0e0;
+    border-color: #b0b0b0;
     cursor: pointer;
-    /* Indicates the element is clickable */
-    /* Slight scaling effect when hovered for emphasis */
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-    /* Softer, more modern shadow */
-    border: 2px solid hsl(0, 50%, 50%);
-    /* Red border for a delete-like effect */
 }
 
-
-
-@-webkit-keyframes bounceIn-line-bookmark {
-
-    20%,
-    40%,
-    60%,
-    80%,
-    from,
-    to {
-        -webkit-animation-timing-function: cubic-bezier(.215, .61, .355, 1);
-        animation-timing-function: cubic-bezier(.215, .61, .355, 1)
-    }
-
-    0% {
-        opacity: 0;
-        -webkit-transform: scale3d(.3, .3, .3);
-        transform: scale3d(.3, .3, .3)
-    }
-
-    20% {
-        -webkit-transform: scale3d(1.1, 1.1, 1.1);
-        transform: scale3d(1.1, 1.1, 1.1)
-    }
-
-    40% {
-        -webkit-transform: scale3d(.9, .9, .9);
-        transform: scale3d(.9, .9, .9)
-    }
-
-    60% {
-        opacity: 1;
-        -webkit-transform: scale3d(1.03, 1.03, 1.03);
-        transform: scale3d(1.03, 1.03, 1.03)
-    }
-
-    80% {
-        -webkit-transform: scale3d(.97, .97, .97);
-        transform: scale3d(.97, .97, .97)
-    }
-
-    to {
-        opacity: 1;
-        -webkit-transform: scale3d(1, 1, 1);
-        transform: scale3d(1, 1, 1)
-    }
+.note-line-bookmark:focus-within {
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18) !important;
+    transform: translateY(-2px) !important;
 }
 
-@keyframes bounceIn-line-bookmark {
-
-    20%,
-    40%,
-    60%,
-    80%,
-    from,
-    to {
-        -webkit-animation-timing-function: cubic-bezier(.215, .61, .355, 1);
-        animation-timing-function: cubic-bezier(.215, .61, .355, 1)
+/* Dark Mode */
+/* Dark Mode */
+@media (prefers-color-scheme: dark) {
+    .pin-line-bookmark {
+        background: url(chrome-extension://__MSG_@@extension_id__/media/placeholder.svg) center / 80% no-repeat #444;
+        /* Lighter dark */
+        border: 1px solid #666;
+        /* Slightly lighter border */
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+        /* Lighter shadow */
     }
 
-    0% {
-        opacity: 0;
-        -webkit-transform: scale3d(.3, .3, .3);
-        transform: scale3d(.3, .3, .3)
+    .pin-line-bookmark:hover {
+        background: url(chrome-extension://__MSG_@@extension_id__/media/close.svg) center / 80% no-repeat #555;
+        /* Slightly lighter hover */
+        border-color: #888;
+        /* Lighter hover border */
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        /* Lighter hover shadow */
     }
 
-    20% {
-        -webkit-transform: scale3d(1.1, 1.1, 1.1);
-        transform: scale3d(1.1, 1.1, 1.1)
+    .note-line-bookmark:focus-within {
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3) !important;
+        transform: translateY(-2px) !important;
     }
 
-    40% {
-        -webkit-transform: scale3d(.9, .9, .9);
-        transform: scale3d(.9, .9, .9)
+    .note-line-bookmark {
+        background: #404040;
+        /* Slightly lighter note background */
+        color: #ddd;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        /* Slightly stronger shadow */
     }
 
-    60% {
-        opacity: 1;
-        -webkit-transform: scale3d(1.03, 1.03, 1.03);
-        transform: scale3d(1.03, 1.03, 1.03)
+    .noteText-line-bookmark {
+        background: rgba(255, 255, 255, 0.08);
+        /* Slightly lighter background */
+        color: #ddd;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        /* Slightly stronger border */
     }
 
-    80% {
-        -webkit-transform: scale3d(.97, .97, .97);
-        transform: scale3d(.97, .97, .97)
+    .noteText-line-bookmark:focus {
+        background: rgba(255, 255, 255, 0.15);
+        /* Lighter focus background */
     }
 
-    to {
-        opacity: 1;
-        -webkit-transform: scale3d(1, 1, 1);
-        transform: scale3d(1, 1, 1)
+    .note-line-bookmark:hover {
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+        /* Stronger hover shadow */
     }
-}
-
-.bounceIn-line-bookmark {
-    -webkit-animation-duration: .3s;
-    animation-duration: .3s;
-    -webkit-animation-name: bounceIn-line-bookmark;
-    animation-name: bounceIn-line-bookmark
-}
-
-@-webkit-keyframes zoomOut-line-bookmark {
-    from {
-        opacity: 1
-    }
-
-    50% {
-        opacity: 0;
-        -webkit-transform: scale3d(.5, .5, .5);
-        transform: scale3d(.5, .5, .5)
-    }
-
-    to {
-        opacity: 0
-    }
-}
-
-@keyframes zoomOut-line-bookmark {
-    from {
-        opacity: 1
-    }
-
-    50% {
-        opacity: 0;
-        -webkit-transform: scale3d(.5, .5, .5);
-        transform: scale3d(.5, .5, .5)
-    }
-
-    to {
-        opacity: 0
-    }
-}
-
-.remove-pin-line-bookmark {
-    -webkit-animation-name: zoomOut-line-bookmark;
-    animation-name: zoomOut-line-bookmark;
-    -webkit-animation-duration: .3s;
-    animation-duration: .3s
 }
 
 .note-line-bookmark {
     z-index: 100;
-    max-width: 130px;
-    background-color: #fff;
-    color: rgba(0, 0, 0, .87);
-    font-family: sans-serif;
-    border-radius: 16px;
-    border-top-left-radius: 16px;
-    padding: 8px 15px 5px 20px;
+    max-width: 200px;
+    min-width: 200px;
+    background: #fff;
+    color: #333;
+    font-family: "Inter", sans-serif;
+    border-radius: 12px;
     font-size: 14px;
-    margin-top: -4px;
-    margin-left: -4px;
-    padding-left: 50px;
-    min-width: 130px;
-    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .14), 0 3px 1px -2px rgba(0, 0, 0, .2), 0 1px 5px 0 rgba(0, 0, 0, .12);
+    margin-top: 33px;
     visibility: hidden;
-    -webkit-transition-duration: .3s;
-    transition-duration: .3s;
-    -webkit-transition-property: -webkit-box-shadow, -webkit-transform;
-    transition-property: box-shadow;
-    -webkit-transition-timing-function: ease-in;
-    transition-timing-function: ease-in;
+    opacity: 0;
+    transition: opacity 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    transform: translateY(10%);
+}
+
+.note-line-bookmark.fadeIn {
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.note-line-bookmark:hover {
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
 }
 
 .noteText-line-bookmark {
-    outline: 0;
-    line-height: 19px;
-    padding: 0px 0
+    outline: none;
+    line-height: 1.5;
+    padding: 8px;
+    background: rgba(0, 0, 0, 0.05);
+    font-size: 14px;
+    color: #333;
+    transition: background 0.2s ease;
+    border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
-.hoverShadow-line-bookmark {
-    box-shadow: 0 0 0 0 transparent, 0 0 0 0 transparent, 0 2px 15px rgba(0, 0, 0, .3)
+.noteText-line-bookmark:focus {
+    background: rgba(0, 0, 0, 0.08);
 }
 
 [contenteditable=true]:empty:before {
     content: attr(placeholder);
-    color: rgba(0, 0, 0, .54)
+    color: rgba(0, 0, 0, 0.54);
 }
 
-.zoomIn-line-bookmark {
-    -webkit-animation-name: zoomIn-line-bookmark;
-    animation-name: zoomIn-line-bookmark;
-    -webkit-animation-duration: .2s;
-    animation-duration: .2s;
-    visibility: visible
-}
-
-@-webkit-keyframes zoomIn-line-bookmark {
-    from {
+/* Animations */
+@keyframes bounceIn-line-bookmark {
+    0% {
         opacity: 0;
-        -webkit-transform: scale3d(.3, .3, .3);
-        transform: scale3d(.3, .3, .3)
+        transform: scale(0.3);
     }
 
-    50% {
-        opacity: 1
+    20% {
+        transform: scale(1.1);
     }
+
+    40% {
+        transform: scale(0.9);
+    }
+
+    60% {
+        opacity: 1;
+        transform: scale(1.03);
+    }
+
+    80% {
+        transform: scale(0.97);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+.bounceIn-line-bookmark {
+    animation: bounceIn-line-bookmark 0.3s cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+
+@keyframes zoomOut-line-bookmark {
+    50% {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+.remove-pin-line-bookmark {
+    animation: zoomOut-line-bookmark 0.3s;
 }
 
 @keyframes zoomIn-line-bookmark {
-    from {
+    0% {
         opacity: 0;
-        -webkit-transform: scale3d(.3, .3, .3);
-        transform: scale3d(.3, .3, .3)
+        transform: scale(0.3);
     }
 
     50% {
-        opacity: 1
-    }
-}
-
-@-webkit-keyframes fadeInUp-line-bookmark {
-    from {
-        opacity: 0;
-        -webkit-transform: translate3d(0, 10%, 0);
-        transform: translate3d(0, 10%, 0)
-    }
-
-    to {
         opacity: 1;
-        -webkit-transform: translate3d(0, 0, 0);
-        transform: translate3d(0, 0, 0)
     }
 }
 
-@keyframes fadeInUp-line-bookmark {
-    from {
-        opacity: 0;
-        -webkit-transform: translate3d(0, 10%, 0);
-        transform: translate3d(0, 10%, 0)
-    }
-
-    to {
-        opacity: 1;
-        -webkit-transform: translate3d(0, 0, 0);
-        transform: translate3d(0, 0, 0)
-    }
-}
-
-.fadeInUp-line-bookmark {
+.zoomIn-line-bookmark {
+    animation: zoomIn-line-bookmark 0.2s;
     visibility: visible;
-    -webkit-animation-duration: .2s;
-    animation-duration: .2s;
-    -webkit-animation-name: fadeInUp-line-bookmark;
-    animation-name: fadeInUp-line-bookmark
-}
-
-@-webkit-keyframes fadeOutDown-line-bookmark {
-    from {
-        opacity: 1;
-        -webkit-transform: translate3d(0, 0, 0);
-        transform: translate3d(0, 0, 0)
-    }
-
-    to {
-        opacity: 0;
-        -webkit-transform: translate3d(0, 10%, 0);
-        transform: translate3d(0, 10%, 0)
-    }
-}
-
-@keyframes fadeOutDown-line-bookmark {
-    from {
-        opacity: 1
-    }
-
-    to {
-        opacity: 0;
-        -webkit-transform: translate3d(0, 10%, 0);
-        transform: translate3d(0, 10%, 0)
-    }
-}
-
-.fadeOutDown-line-bookmark {
-    visibility: hidden;
-    -webkit-animation-duration: .2s;
-    animation-duration: .2s;
-    -webkit-animation-name: fadeOutDown-line-bookmark;
-    animation-name: fadeOutDown-line-bookmark;
-    transition: visibility linear .2s
 }
 
 .note-line-bookmark:focus {
-    box-shadow: 0 0 0 0 transparent, 0 0 0 0 transparent, 0 2px 15px rgba(0, 0, 0, .3)
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.3);
 }
