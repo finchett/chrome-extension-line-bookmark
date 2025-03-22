@@ -1,22 +1,45 @@
 class Pin {
-  constructor(x, y, index, topScroll, note = "") {
+  constructor(anchorSelector, x, y, index, note = "") {
     this.index = index;
+    this.anchorSelector = anchorSelector
     this.x = x;
     this.y = y;
-    this.topScroll = topScroll;
     this.note = note;
     this.stick = false;
 
+    this.createParent()
+    this.refreshAnchor()
+    this.refreshPosition()
     this.createElements();
     document.documentElement.appendChild(this.pinParent);
   }
 
-  createElements() {
-    // Create parent container
+  refreshAnchor() {
+    this.anchor = getAnchorFromSelector(this.anchorSelector)
+    this.anchor.classList.add('pin-anchor')
+  }
+
+  highlightAnchor() {
+    this.anchor.classList.add('anchor-highlight');
+  }
+
+  unlightAnchor() {
+    this.anchor.classList.remove('anchor-highlight');
+  }
+
+  refreshPosition() {
+    const margins = 15;
+    this.position = getOffsetPosition(this.anchor, this.x, this.y)
+    this.pinParent.style.left = `${Math.max(margins, Math.min(this.position.x - 9.5, (window.innerWidth - (margins + 20))))}px`;
+    this.pinParent.style.top = `${Math.max(this.position.y - 20, margins)}px`;
+  }
+
+  createParent() {
     this.pinParent = document.createElement("div");
     this.pinParent.classList.add("pin-parent");
-    this.pinParent.style.left = `${this.x - 9.5}px`;
-    this.pinParent.style.top = `${this.y - 20}px`;
+  }
+
+  createElements() {
 
     // Create the pin element.
     this.pin = document.createElement("div");
@@ -25,6 +48,7 @@ class Pin {
     this.pin.addEventListener("mouseenter", this.handlePinMouseEnter.bind(this));
     this.pin.addEventListener("mouseenter", () => this.pin.classList.add("hover"));
     this.pin.addEventListener("mouseleave", () => this.pin.classList.remove("hover"));
+    this.pin.addEventListener("mouseleave", this.handlePinMouseLeave.bind(this));
     this.pin.addEventListener("click", (e) => {
       e.stopPropagation();
       removePin(this.pin);
@@ -59,6 +83,11 @@ class Pin {
 
   handlePinMouseEnter() {
     this.showNote();
+    this.highlightAnchor();
+  }
+
+  handlePinMouseLeave() {
+    this.unlightAnchor()
   }
 
   showNote() {
@@ -79,10 +108,10 @@ class Pin {
     // Adjust note position if it would overflow the viewport.
     const newMarginLeft =
       pinRect.left + noteWidth + 20 > viewportWidth ? `-${noteWidth - 20}px` : "0px";
-    this.noteDiv.style.marginLeft = newMarginLeft;
 
+    this.noteDiv.style.marginLeft = newMarginLeft;
     this.noteDiv.classList.add("fadeIn");
-    
+
     // The fadeIn class already controls visibility via CSS.
     this.noteDiv.style.visibility = "visible";
   }
@@ -122,8 +151,8 @@ class Pin {
   }
 }
 
-// Global Stuff
 const pins = [];
+
 let altKeyPressed = false;
 const generateId = (() => {
   let id = 0;
@@ -162,8 +191,77 @@ function handleAltClick(e) {
   }
 }
 
+function getOffsetPosition(element, offsetX, offsetY) {
+  if (!element) return null;
+
+  const rect = element.getBoundingClientRect();
+  const x = rect.left + window.scrollX + offsetX;
+  const y = rect.top + window.scrollY + offsetY;
+
+  return { x, y };
+}
+
+const getUniqueSelector = (el) => {
+  let path = [], parent;
+  while (parent = el.parentNode) {
+    path.unshift(`${el.tagName}:nth-child(${[].indexOf.call(parent.children, el) + 1})`);
+    el = parent;
+  }
+  return `${path.join(' > ')}`.toLowerCase();
+};
+
+// distance but preferes y over x
+function yeuclideanDistance(x1, y1, x2, y2) {
+  return Math.sqrt(((x2 - x1) ** 2) * 0.1 + (y2 - y1) ** 2);
+}
+
+function getScrollAnchor(x, y) {
+  // select candidate elements. Adjust the selector to match elements you expect to be anchors.
+  const candidates = Array.from(document.querySelectorAll('p, section, article, body, main'));
+
+  let anchor = null;
+  let minDistance = Infinity;
+  let ox = null;
+  let oy = null;
+
+  candidates.forEach(el => {
+    const rect = el.getBoundingClientRect();
+    
+    // Only consider elements that are actually visible.
+    if (rect.width === 0 || rect.height === 0) return;
+    // We want elements at least partially in the viewport.
+    if (rect.bottom <= 0 || rect.top >= window.innerHeight) return;
+
+    // Calculate distance from the top of the viewport. You can adjust to use rect.top directly
+    // if you only want elements below or at the top.
+
+    const ex = rect.left + window.scrollX;
+    const ey = rect.top + window.scrollY;
+
+    const distance = Math.abs(yeuclideanDistance(ex, ey, x, y));
+    if (distance < minDistance) {
+      minDistance = distance;
+      anchor = el;
+      ox = x - ex;
+      oy = y - ey;
+    }
+  });
+
+  return { anchor: anchor, x: ox, y: oy };
+}
+
+function getAnchorFromSelector(anchorSelector) {
+  return document.querySelector(anchorSelector);
+}
+
 function addNewPin(x, y) {
-  const pin = new Pin(x, y, generateId(), document.documentElement.scrollTop);
+
+  const anchorElement = getScrollAnchor(x, y)
+  const anchorSelector = getUniqueSelector(anchorElement.anchor)
+  const verifySelector = document.querySelector(anchorSelector);
+
+  const pin = new Pin(anchorSelector, anchorElement.x, anchorElement.y, generateId());
+
   pin.showNote();
   pins.push(pin);
   savePins();
@@ -175,6 +273,7 @@ function removePin(target) {
     const pinIndex = pins.findIndex((pin) => pin.index == target.getAttribute("data-index"));
     if (pinIndex !== -1) {
       const [removedPin] = pins.splice(pinIndex, 1);
+      removedPin.unlightAnchor();
       removedPin.removeElement();
     }
     target.remove();
@@ -187,9 +286,9 @@ function isNearExistingPin(x, y) {
 }
 
 function savePins() {
-  const pinData = pins.map(({ x, y, index, topScroll, note }) => ({ x, y, index, topScroll, note }));
+  const pinData = pins.map(({ anchorSelector, x, y, index, note }) => ({ anchorSelector, x, y, index, note }));
   const cleanUrl = window.location.origin + window.location.pathname;
-  
+
   chrome.storage.local.set({ [cleanUrl]: pinData });
 }
 
@@ -228,8 +327,10 @@ function loadPins() {
   chrome.storage.local.get(cleanUrl, (result) => {
     if (result[cleanUrl]) {
       const pinData = result[cleanUrl];
+
+
       pinData.forEach((data) => {
-        const pin = new Pin(data.x, data.y, data.index, data.topScroll, data.note);
+        const pin = new Pin(data.anchorSelector, data.x, data.y, data.index, data.note);
         pins.push(pin);
       });
     }
@@ -244,16 +345,23 @@ document.addEventListener("keydown", (e) => {
   }
 });
 
+window.addEventListener("resize", () => {
+  pins.forEach(pin => {
+    pin.refreshPosition()
+  })
+});
+
+
 function scrollToNextPin() {
   if (pins.length === 0) return;
 
-  const sortedPins = [...pins].sort((a, b) => a.y - b.y);
+  const sortedPins = [...pins].sort((a, b) => a.position.y - b.position.y);
 
   let nextPinIndex = 0;
   let previousPinIndex = -1;
 
   if (sortedPins.length > 1) {
-    nextPinIndex = sortedPins.findIndex((pin) => pin.y > window.scrollY + 120)
+    nextPinIndex = sortedPins.findIndex((pin) => pin.position.y > window.scrollY + 120)
 
     if (nextPinIndex == -1) {
       previousPinIndex = sortedPins.length - 1
@@ -274,7 +382,7 @@ function scrollToNextPin() {
     if (nextPin.note !== "") nextPin.showNote();
     const offset = 100;
     window.scrollTo({
-      top: nextPin.y - offset,
+      top: nextPin.position.y - offset,
       behavior: "smooth",
     });
   }

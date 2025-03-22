@@ -1,6 +1,6 @@
 {
   "name": "Simple Pins",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "manifest_version": 3,
   "description": "Add persistent pins to long documents and scroll between them easily.",
   "author": "Sam Finchett",
@@ -21,7 +21,7 @@
     {
       "matches": ["<all_urls>"],
       "css": ["css/bookmark.min.css"],
-      "js": ["js/bookmark.js"],
+      "js": ["js/bookmark.min.js"],
       "run_at": "document_end"
     }
   ],

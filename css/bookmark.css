@@ -29,16 +29,15 @@
 .note-line-bookmark {
     z-index: 100;
     width: 200px;
-    background: #fff;
     color: #333;
     font-family: "Inter", sans-serif;
     font-size: 14px;
+    padding-top: 28px;
     border-radius: 15px;
-    margin-top: 28px;
     visibility: hidden;
+    overflow: visible;
     opacity: 0;
     transform: translateY(10%);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     transition: opacity 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
 }
 
@@ -48,12 +47,12 @@
     transform: translateY(0);
 }
 
-.note-line-bookmark:hover,
-.note-line-bookmark:focus {
+.noteText-line-bookmark:hover,
+.noteText-line-bookmark:focus {
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
 }
 
-.note-line-bookmark:focus-within {
+.noteText-line-bookmark:focus-within {
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
 }
 
@@ -62,17 +61,39 @@
     outline: none;
     line-height: 1.5;
     padding: 8px;
-    background: rgba(0, 0, 0, 0.08);
+    background: hsl(0, 0%, 92%);
     border: 1px solid rgba(0, 0, 0, 0.1);
     border-radius: 15px;
     font-size: 14px;
     color: #333;
     transition: background 0.2s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: opacity 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .noteText-line-bookmark:focus {
-    background: rgba(0, 0, 0, 0.05);
+    background: hsl(0, 0%, 95%);
 }
+
+.anchor-highlight {
+    border-radius: 4px;
+    /* Rounds the corners */
+
+    /* adds background color while keeping original mixed in */
+    background: rgba(120, 120, 255, 0.1);
+            
+    background-blend-mode: difference;
+    box-shadow: 0 0 0 10px rgba(120, 120, 255, 0.1);
+    overflow: visible;
+
+    /* Adds transparent padding-like effect */
+}
+
+.pin-anchor {
+    transition: background 0.2s ease, box-shadow 0.2s ease, border-radius 0.2s ease;
+}
+
+
 
 /* Light Mode Placeholder */
 [contenteditable=true]:empty:before {
@@ -160,26 +181,19 @@
 
     .note-line-bookmark,
     .noteText-line-bookmark {
-        background: #404040;
         color: #ddd;
-    }
-
-    .note-line-bookmark {
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
     }
 
     .noteText-line-bookmark {
         border: 1px solid rgba(255, 255, 255, 0.15);
+        background: hsl(0, 0%, 25%);
     }
 
-    .noteText-line-bookmark:focus {
-        background: rgba(255, 255, 255, 0.15);
-    }
-
-    .note-line-bookmark:hover,
-    .note-line-bookmark:focus,
-    .note-line-bookmark:focus-within {
-        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+    .noteText-line-bookmark:hover,
+    .noteText-line-bookmark:focus,
+    .noteText-line-bookmark:focus-within {
+        box-shadow: 0 4px 10px hsla(0, 0%, 0%, 0.3);
+        background: hsl(0, 0%, 32%);
     }
 
     [contenteditable=true]:empty:before {
